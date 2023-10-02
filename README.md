@@ -55,9 +55,9 @@ Done. 2 matching projects have been written to result.txt file
 After running the script you will be able to check the report in the way that you've selected using `--raw` 
 parameter. Both `result.md` and `result.txt` files will be available in `output` directory. <br/>
 
-#### Case: search term _dependency_
+### Case: search term _"main"_
 
-Example of `result.txt` file (when `raw` parameter was provided):
+#### Example of `result.txt` file (when `raw` parameter was provided):
 
 ```shell
 PROJECT URL: https://test.gitlab.com/java-microservices-test
@@ -68,9 +68,13 @@ PROJECT URL: https://test.gitlab.com/java-microservices-test
   path: src/main/java/com/example/Main.java
   line: 34
 ```
-Example of `result.md` file:
+Basically that is lightweight file, which you can send to someone as report.
 
-![img.png](static/report-md-example.png)
+<br/>
+
+#### Example of `result.md` file:
+
+![](static/report-md-example.png)
 
 ## Caching
 As  [mentioned before](#Running-the-script) you can store fetched GitLab repositories in a cache 
