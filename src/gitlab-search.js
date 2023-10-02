@@ -7,7 +7,7 @@ console.log(`
  | |  _| | __| |/ _\` | '_ \\    \\___ \\ / _ \\/ _\` | '__/ __| '_ \\ 
  | |_| | | |_| | (_| | |_) |    ___) |  __/ (_| | | | (__| | | |
   \\____|_|\\__|_|\\__,_|_.__/    |____/ \\___|\\__,_|_|  \\___|_| |_|
-                                                                           v 1.0.1                                     
+                                                                           v 1.0.2                                     
 `);
 
 const args = process.argv.slice(2);
@@ -41,7 +41,12 @@ args.forEach(arg => {
 });
 
 const OUTPUT_DIR = './output';
-const OUTPUT_FILE = `${OUTPUT_DIR}/${isRawReport && './result.txt' || './result.md'}`;
+
+if (!fs.existsSync(OUTPUT_DIR)) {
+    fs.mkdirSync(OUTPUT_DIR);
+}
+
+const OUTPUT_FILE = `${OUTPUT_DIR}/${isRawReport && 'result.txt' || 'result.md'}`;
 const CACHE_REPOS_FILE = `${OUTPUT_DIR}/repos.json`;
 fs.existsSync(OUTPUT_FILE) && fs.unlinkSync(OUTPUT_FILE);
 
@@ -109,17 +114,21 @@ const searchOverProject = () => {
                         matchedProjects++;
                         let repoData = `PROJECT URL: ${project['web_url']}`;
                         searchOccurences.forEach(({ref, path, startline, data}) => {
+                            const dataLines = data.toLowerCase().split('\n');
+                            let actualLine = startline + dataLines
+                                .findIndex(line => line.includes(searchStr.toLowerCase()));
+
                             if (isRawReport) {
                                 repoData += `\n- branch: ${ref}`;
                                 repoData += `\n  path: ${path}`;
-                                repoData += `\n  line: ${startline}`;
+                                repoData += `\n  line: ${actualLine}`;
                             } else {
                                 repoData += `\n- branch: \`${ref}\` <br/>`;
                                 repoData += `\n  path: \`${path}\` <br/>`;
-                                repoData += `\n  line: \`${startline}\` <br/>`;
+                                repoData += `\n  line: \`${actualLine}\` <br/>`;
                                 repoData +=
-                                    '\n  occurrence:' +
-                                    '\n```' + data + '```'
+                                    `\n  occurrence: [link](${project['web_url']}/-/blob/${ref}/${path}#L${actualLine})` +
+                                    '\n```\n' + data + '```'
                                 ;
                             }
                         });
@@ -130,7 +139,7 @@ const searchOverProject = () => {
                     }
                 }
                 if (checkedProjectsAmt === projects.length) {
-                    console.log(`Done. ${matchedProjects} matching projects have been written to result.txt file`);
+                    console.log(`Done. ${matchedProjects} matching projects have been written to ${OUTPUT_FILE} file`);
                 }
             }
         )
