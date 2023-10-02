@@ -1,0 +1,9 @@
+# IDEA
+.idea
+
+# NODEJS
+node_modules
+package-lock.json
+
+# RESOURCES
+result.txt
