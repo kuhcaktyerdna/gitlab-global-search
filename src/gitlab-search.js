@@ -102,6 +102,7 @@ const searchOverProject = () => {
     console.info('========= START SEARCHING OVER THE PROJECTS =========')
     let checkedProjectsAmt = 0;
     let matchedProjects = 0;
+    let totalMatches = 0;
     projects.forEach((project) => {
         request.get(
             getSearchInProjectUrl(project.id),
@@ -109,11 +110,12 @@ const searchOverProject = () => {
                 checkedProjectsAmt++;
 
                 if (!error && response.statusCode === 200) {
-                    const searchOccurences = JSON.parse(body);
-                    if (searchOccurences.length > 0) {
+                    const searchOccurrences = JSON.parse(body);
+                    if (searchOccurrences.length > 0) {
                         matchedProjects++;
                         let repoData = `PROJECT URL: ${project['web_url']}`;
-                        searchOccurences.forEach(({ref, path, startline, data}) => {
+                        searchOccurrences.forEach(({ref, path, startline, data}) => {
+                            totalMatches++;
                             const dataLines = data.toLowerCase().split('\n');
                             let actualLine = startline + dataLines
                                 .findIndex(line => line.includes(searchStr.toLowerCase()));
@@ -123,12 +125,13 @@ const searchOverProject = () => {
                                 repoData += `\n  path: ${path}`;
                                 repoData += `\n  line: ${actualLine}`;
                             } else {
+                                const occurrence = '\n```\n' + data + '```';
                                 repoData += `\n- branch: \`${ref}\` <br/>`;
                                 repoData += `\n  path: \`${path}\` <br/>`;
                                 repoData += `\n  line: \`${actualLine}\` <br/>`;
                                 repoData +=
                                     `\n  occurrence: [link](${project['web_url']}/-/blob/${ref}/${path}#L${actualLine})` +
-                                    '\n```\n' + data + '```'
+                                    occurrence
                                 ;
                             }
                         });
@@ -139,7 +142,7 @@ const searchOverProject = () => {
                     }
                 }
                 if (checkedProjectsAmt === projects.length) {
-                    console.log(`Done. ${matchedProjects} matching projects have been written to ${OUTPUT_FILE} file`);
+                    console.log(`Done. ${matchedProjects} matching projects have been written to ${OUTPUT_FILE} file. Total matches is ${totalMatches}`);
                 }
             }
         )
