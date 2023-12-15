@@ -25,6 +25,8 @@ where
 + `raw` — (Optional) Determines the way of writing the report data: in raw `.txt` file or in `.md` file.
 + `cache-repos` — (Optional) If enabled, stores fetched repositories in a separate file in `output/repos.json`.
 
+In case, when `search` param was not provided, user will be asked to provide search term during runtime.
+
 To avoid inputting the data about the repo and access token, those data can be stored as environment 
 variables under the `REPO` and `ACCESS_TOKEN` keys. </br>
 
@@ -41,7 +43,7 @@ After starting the script you will be able to see the console output of running 
  | |  _| | __| |/ _` | '_ \    \___ \ / _ \/ _` | '__/ __| '_ \ 
  | |_| | | |_| | (_| | |_) |    ___) |  __/ (_| | | | (__| | | |
   \____|_|\__|_|\__,_|_.__/    |____/ \___|\__,_|_|  \___|_| |_|
-                                                                           v 1.0.1                                     
+                                                                           v 1.0.3                                     
 
 ============== START PROJECTS FETCHING ==============
 Caching enabled. Read 28 projects from cache file

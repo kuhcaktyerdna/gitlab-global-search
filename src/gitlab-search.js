@@ -1,5 +1,6 @@
 const request = require('request');
 const fs = require('fs');
+const prompt = require('prompt-sync')();
 
 console.log(`
    ____ _ _   _       _         ____                      _     
@@ -51,8 +52,7 @@ const CACHE_REPOS_FILE = `${OUTPUT_DIR}/repos.json`;
 fs.existsSync(OUTPUT_FILE) && fs.unlinkSync(OUTPUT_FILE);
 
 if (!searchStr) {
-    console.error('[ERROR] No search string passed! Please provide it via --search parameter');
-    process.exit(1);
+    searchStr = prompt('Please input search term: ');
 }
 
 if (!baseUrl) {

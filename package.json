@@ -1,9 +1,10 @@
 {
   "name": "gitlab-global-search",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "kuhcaktyerdna",
   "license": "",
   "dependencies": {
+    "prompt-sync": "^4.2.0",
     "request": "^2.88.2"
   }
 }
